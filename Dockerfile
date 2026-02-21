@@ -2,7 +2,7 @@ FROM docker.io/library/eclipse-temurin:21-jdk-alpine AS builder
 
 WORKDIR /src/advshop
 COPY . .
-RUN chmod +x ./gradlew && ./gradlew clean bootJar --no-dependency-verification
+RUN chmod +x ./gradlew && ./gradlew clean bootJar -Dorg.gradle.dependency.verification=off
 
 FROM docker.io/library/eclipse-temurin:21-jre-alpine AS runner
 
