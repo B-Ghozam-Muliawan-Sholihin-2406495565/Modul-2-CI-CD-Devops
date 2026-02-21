@@ -3,6 +3,7 @@ plugins {
     jacoco
     id("org.springframework.boot") version "3.5.10"
     id("io.spring.dependency-management") version "1.1.7"
+    id("org.sonarqube") version "6.0.1.5171"
 }
 
 group = "id.ac.ui.cs.advprog"
@@ -28,6 +29,14 @@ configurations {
 
 repositories {
     mavenCentral()
+}
+
+sonar {
+    properties {
+        property("sonar.projectKey", "B-Ghozam-Muliawan-Sholihin-2406495565_Modul-2-CI-CD-Devops") 
+        property("sonar.organization", "b-ghozam-muliawan-sholihin-2406495565")
+        property("sonar.host.url", "https://sonarcloud.io")
+    }
 }
 
 dependencies {
