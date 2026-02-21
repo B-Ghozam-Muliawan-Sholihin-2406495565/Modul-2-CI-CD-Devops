@@ -52,7 +52,7 @@ public class CreateProductFunctionalTest {
         WebElement quantityInput = driver.findElement(By.id("quantityInput"));
         String quantity = "67";
         quantityInput.clear();
-        quantityInput.sendKeys("\b\b\b\b\b"); // Extra backspaces to ensure field is empty
+        quantityInput.sendKeys("\b\b\b\b\b");
         quantityInput.sendKeys(quantity);
 
         WebElement submit = driver.findElement(By.className("btn-primary"));

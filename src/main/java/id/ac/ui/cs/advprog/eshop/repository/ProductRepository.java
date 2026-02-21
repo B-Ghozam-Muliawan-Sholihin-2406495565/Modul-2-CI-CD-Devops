@@ -32,15 +32,15 @@ public class ProductRepository {
     }
     
 
-    public Product edit(Product updatedProduct) {
-        Product existingProduct = findById(updatedProduct.getProductId());
-        
-        if (existingProduct != null) {
+    public void edit(Product updatedProduct) {
+        try{
+            Product existingProduct = findById(updatedProduct.getProductId());
             existingProduct.setProductName(updatedProduct.getProductName());
             existingProduct.setProductQuantity(updatedProduct.getProductQuantity());
-            return existingProduct;
+        }catch(NoSuchElementException e){
+            System.out.println("Product not found - " + e.getMessage());
+            throw e;
         }
-        throw new NoSuchElementException("Product ID " + updatedProduct.getProductId() + " not found");
     }
 
     public boolean delete(String id) {
