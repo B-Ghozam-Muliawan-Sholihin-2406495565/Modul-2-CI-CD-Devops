@@ -1,4 +1,5 @@
 package id.ac.ui.cs.advprog.eshop.controller;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import id.ac.ui.cs.advprog.eshop.model.Car;
 import id.ac.ui.cs.advprog.eshop.service.CarWriter;
@@ -10,13 +11,11 @@ import java.util.List;
 @Controller
 @RequestMapping("/car")
 public class CarController {
-    private final CarFinder carFinder;
-    private final CarWriter carWriter;
+    @Autowired
+    private CarFinder carFinder;
 
-    public CarController(CarFinder carFinder, CarWriter carWriter) {
-        this.carFinder = carFinder;
-        this.carWriter = carWriter;
-    }
+    @Autowired
+    private CarWriter carWriter;
 
     @GetMapping("/createCar")
     public String createCarPage(Model model) {

@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import id.ac.ui.cs.advprog.eshop.model.Car;
@@ -7,11 +8,8 @@ import id.ac.ui.cs.advprog.eshop.repository.CarRepository;
 
 @Service
 public class CarWriterImpl implements CarWriter{
-    private final CarRepository carRepository;
-
-    public CarWriterImpl(CarRepository carRepository) {
-        this.carRepository = carRepository;
-    }
+    @Autowired
+    private CarRepository carRepository;
 
     @Override
     public Car create(Car car) {

@@ -23,11 +23,11 @@
 
 1. - Saya menerapkan SRP pada Controller dan Service, dimana sebelumnya Product Controller mengandung endpoint untuk Car juga, maka endpoint tersebut saya pindahkan ke CarController.java. Untuk Service, class Product dan Car saya pisah berdasarkan kegunaannya, yaitu Writer dan Finder. Tak lupa saya juga memisahkan unit-testnya.
    - Saya menerapkan OCP pada Repository dan Service, karena dua-duanya memiliki kode dan fungsi yang sama persis, saya buat base* dan interfacenya, lalu diimplementasikan oleh *Impl.java
-   - Saya menerapkan LSP 
-   - Saya menerapkan ISP pada Service dan 
+   - Saya menerapkan LSP pada Controller, dimana tadinya car extends product, namun karena tidak berhubungan, saya hapus line tersebut.
+   - Saya menerapkan ISP pada Service dan Repository, dimana interface membedakan fungsi Finder dan Writer, sehingga class menjadi lebih spesifik.
    - DIP sudah diimplementasikan oleh source code dan Spring, dimana @Autowired berguna untuk injeksi, dan injeksi sudah melewai Interface atau abstraksi, bukan melalui kelas konkrit.
 
-2. Dengan pengaplikasian SOLID pada source code project, kode menjadi lebih rapi dan lebih mudah untuk di maintain serta lebih mudah untuk di expand. Misalnya
+2. Dengan pengaplikasian SOLID pada source code project, kode menjadi lebih rapi dan lebih mudah untuk di maintain serta lebih mudah untuk di expand. Contohnya pengaplikasian LSP dan SRP pada Controller, yang tadinya Car ter-couple dengan Car, sekarang menjadi lebih rapih dan sekarang car tidak tercouple dengan product serta fokus dengan fungsi car saja, tidak perlu extend product.
 
-3. Kekurangan dari source code sebelum apply SOLID adalah, 
+3. Kekurangan dari source code sebelum apply SOLID adalah, banyak class yang terlalu palugada, Salah satunya contohnya seperti Product Controller, sebelum aplikasi SRP, Controller tersebut juga menghandle endpoint car yang seharusnya tidak perlu dan tidak mengindahkan prinsip SRP.
 </details>

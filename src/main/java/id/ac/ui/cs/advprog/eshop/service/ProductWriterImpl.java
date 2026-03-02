@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import id.ac.ui.cs.advprog.eshop.model.Product;
@@ -8,11 +9,8 @@ import id.ac.ui.cs.advprog.eshop.repository.ProductRepository;
 @Service
 public class ProductWriterImpl implements ProductWriter{
 
-    private final ProductRepository productRepository;
-
-    public ProductWriterImpl(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
+    @Autowired
+    private ProductRepository productRepository;
 
     @Override
     public Product create(Product product) {
