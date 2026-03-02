@@ -27,12 +27,14 @@ public class CarRepositoryImpl implements CarRepository {
     }
 
     public Car findById(String id) {
-        for (Car car : carData) {
+        Iterator<Car> carIterator = findAll();
+        while (carIterator.hasNext()) {
+            Car car = carIterator.next();
             if (car.getCarId().equals(id)) {
                 return car;
             }
         }
-        return null;
+        throw new NoSuchElementException("Product ID " + id + " not found");
     }
 
     public void edit(Car updatedCar) {

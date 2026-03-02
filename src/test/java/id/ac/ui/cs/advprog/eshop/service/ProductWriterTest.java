@@ -17,7 +17,7 @@ public class ProductWriterTest {
     private ProductRepositoryImpl productRepository;
 
     @InjectMocks
-    private ProductWriterImpl productWriter;
+    private ProductWriter productWriter;
 
     @Test
     void testCreate() {

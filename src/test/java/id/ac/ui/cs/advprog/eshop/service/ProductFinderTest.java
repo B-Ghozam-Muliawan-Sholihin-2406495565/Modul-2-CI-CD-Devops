@@ -1,6 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.service;
 import id.ac.ui.cs.advprog.eshop.model.Product;
-import id.ac.ui.cs.advprog.eshop.repository.ProductRepositoryImpl;
+import id.ac.ui.cs.advprog.eshop.repository.ProductRepository;
 import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -17,10 +17,10 @@ import java.util.ArrayList;
 public class ProductFinderTest {
 
     @Mock
-    private ProductRepositoryImpl productRepository;
+    private ProductRepository productRepository;
 
     @InjectMocks
-    private ProductFinderImpl productFinder;
+    private ProductFinder productFinder;
     
 
     @Test

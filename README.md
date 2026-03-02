@@ -21,7 +21,13 @@
 <details>
 <summary>Modul 3</summary>
 
-1. - Saya menerapkan SRP pada Controller dan Service, dimana sebelumnya Product Controller mengandung endpoint untuk Car juga, maka endpoint tersebut saya pindahkan ke CarController.java. Untuk Service, Product dan Car
+1. - Saya menerapkan SRP pada Controller dan Service, dimana sebelumnya Product Controller mengandung endpoint untuk Car juga, maka endpoint tersebut saya pindahkan ke CarController.java. Untuk Service, class Product dan Car saya pisah berdasarkan kegunaannya, yaitu Writer dan Finder. Tak lupa saya juga memisahkan unit-testnya.
+   - Saya menerapkan OCP pada Repository dan Service, karena dua-duanya memiliki kode dan fungsi yang sama persis, saya buat base* dan interfacenya, lalu diimplementasikan oleh *Impl.java
+   - Saya menerapkan LSP 
+   - Saya menerapkan ISP pada Service dan 
+   - DIP sudah diimplementasikan oleh source code dan Spring, dimana @Autowired berguna untuk injeksi, dan injeksi sudah melewai Interface atau abstraksi, bukan melalui kelas konkrit.
 
-- 
+2. Dengan pengaplikasian SOLID pada source code project, kode menjadi lebih rapi dan lebih mudah untuk di maintain serta lebih mudah untuk di expand. Misalnya
+
+3. Kekurangan dari source code sebelum apply SOLID adalah, 
 </details>

@@ -1,8 +1,7 @@
 package id.ac.ui.cs.advprog.eshop.controller;
 import id.ac.ui.cs.advprog.eshop.model.Product;
-import id.ac.ui.cs.advprog.eshop.service.ProductWriterImpl;
-import id.ac.ui.cs.advprog.eshop.service.ProductFinderImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import id.ac.ui.cs.advprog.eshop.service.ProductWriter;
+import id.ac.ui.cs.advprog.eshop.service.ProductFinder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,11 +11,13 @@ import java.util.List;
 @RequestMapping("/product")
 public class ProductController {
 
-    @Autowired
-    private ProductWriterImpl productWriter;
-    
-    @Autowired
-    private ProductFinderImpl productFinder;
+    private final ProductWriter productWriter;
+    private final ProductFinder productFinder;
+
+    public ProductController(ProductWriter productWriter, ProductFinder productFinder) {
+        this.productWriter = productWriter;
+        this.productFinder = productFinder;
+    }
 
     @GetMapping("/create")
     public String createProductPage(Model model) {

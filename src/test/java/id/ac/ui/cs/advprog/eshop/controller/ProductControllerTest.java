@@ -22,8 +22,8 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import id.ac.ui.cs.advprog.eshop.model.Product;
-import id.ac.ui.cs.advprog.eshop.service.ProductWriterImpl;
-import id.ac.ui.cs.advprog.eshop.service.ProductFinderImpl;
+import id.ac.ui.cs.advprog.eshop.service.ProductWriter;
+import id.ac.ui.cs.advprog.eshop.service.ProductFinder;
 
 @WebMvcTest(ProductController.class)
 public class ProductControllerTest {
@@ -31,10 +31,10 @@ public class ProductControllerTest {
     private MockMvc mockMvc;
 
     @MockitoBean
-    private ProductWriterImpl productWriter;
+    private ProductWriter productWriter;
 
     @MockitoBean
-    private ProductFinderImpl productFinder;
+    private ProductFinder productFinder;
 
     private Product product;
 
