@@ -22,7 +22,8 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import id.ac.ui.cs.advprog.eshop.model.Product;
-import id.ac.ui.cs.advprog.eshop.service.ProductService;
+import id.ac.ui.cs.advprog.eshop.service.ProductWriterImpl;
+import id.ac.ui.cs.advprog.eshop.service.ProductFinderImpl;
 
 @WebMvcTest(ProductController.class)
 public class ProductControllerTest {
@@ -30,7 +31,10 @@ public class ProductControllerTest {
     private MockMvc mockMvc;
 
     @MockitoBean
-    private ProductService service;
+    private ProductWriterImpl productWriter;
+
+    @MockitoBean
+    private ProductFinderImpl productFinder;
 
     private Product product;
 
@@ -56,7 +60,7 @@ public class ProductControllerTest {
                 .flashAttr("product", product)) 
                 .andExpect(status().is3xxRedirection()) 
                 .andExpect(redirectedUrl("list")); 
-        verify(service, times(1)).create(any(Product.class));
+        verify(productWriter, times(1)).create(any(Product.class));
     }
 
     @Test
@@ -68,7 +72,7 @@ public class ProductControllerTest {
                 .andExpect(status().isOk()) 
                 .andExpect(view().name("createProduct"))
                 .andExpect(model().attributeExists("errorMessage")); 
-        verify(service, times(0)).create(any(Product.class));
+        verify(productWriter, times(0)).create(any(Product.class));
     }
 
     @Test
@@ -79,19 +83,19 @@ public class ProductControllerTest {
                 .andExpect(status().isOk()) 
                 .andExpect(view().name("createProduct"))
                 .andExpect(model().attributeExists("errorMessage")); 
-        verify(service, times(0)).create(any(Product.class));
+        verify(productWriter, times(0)).create(any(Product.class));
     }
 
     @Test
     void testEditProductPage() throws Exception {
-        when(service.findById("eb558e9f-1c39-460e-8860-71af6af63bd6")).thenReturn(product);
+        when(productFinder.findById("eb558e9f-1c39-460e-8860-71af6af63bd6")).thenReturn(product);
         
         mockMvc.perform(get("/product/edit/eb558e9f-1c39-460e-8860-71af6af63bd6"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("editProduct"))
                 .andExpect(model().attributeExists("product"));
         
-        verify(service, times(1)).findById("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        verify(productFinder, times(1)).findById("eb558e9f-1c39-460e-8860-71af6af63bd6");
     }
 
     @Test
@@ -100,7 +104,7 @@ public class ProductControllerTest {
                 .flashAttr("product", product)) 
                 .andExpect(status().is3xxRedirection()) 
                 .andExpect(redirectedUrl("list")); 
-        verify(service, times(1)).edit(any(Product.class));
+        verify(productWriter, times(1)).edit(any(Product.class));
     }
 
 
@@ -113,7 +117,7 @@ public class ProductControllerTest {
                 .andExpect(status().isOk()) 
                 .andExpect(view().name("editProduct"))
                 .andExpect(model().attributeExists("errorMessage")); 
-        verify(service, times(0)).edit(any(Product.class));
+        verify(productWriter, times(0)).edit(any(Product.class));
     }
 
     @Test
@@ -124,7 +128,7 @@ public class ProductControllerTest {
                 .andExpect(status().isOk()) 
                 .andExpect(view().name("editProduct"))
                 .andExpect(model().attributeExists("errorMessage")); 
-        verify(service, times(0)).edit(any(Product.class));
+        verify(productWriter, times(0)).edit(any(Product.class));
     }
 
     @Test
@@ -133,7 +137,7 @@ public class ProductControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/product/list"));
         
-        verify(service, times(1)).delete("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        verify(productWriter, times(1)).delete("eb558e9f-1c39-460e-8860-71af6af63bd6");
     }
 
     @Test
@@ -147,13 +151,13 @@ public class ProductControllerTest {
         product2.setProductQuantity(50);
         productList.add(product2);
         
-        when(service.findAll()).thenReturn(productList);
+        when(productFinder.findAll()).thenReturn(productList);
         
         mockMvc.perform(get("/product/list"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("productList"))
                 .andExpect(model().attributeExists("products"));
         
-        verify(service, times(1)).findAll();
+        verify(productFinder, times(1)).findAll();
     }
 }

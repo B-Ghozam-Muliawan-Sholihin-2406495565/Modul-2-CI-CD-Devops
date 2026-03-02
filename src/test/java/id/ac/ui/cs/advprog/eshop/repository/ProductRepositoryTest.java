@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProductRepositoryTest {
 
     @InjectMocks
-    ProductRepository productRepository;
+    ProductRepositoryImpl productRepository;
 
     private Product product1;
 
@@ -64,7 +64,7 @@ class ProductRepositoryTest {
         assertFalse(productIterator.hasNext());
     }
 
-        @Test
+    @Test
     void testFindByIdAndUpdate(){
         Product product2 = new Product();
         product2.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
