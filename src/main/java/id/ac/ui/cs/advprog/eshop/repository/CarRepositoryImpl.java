@@ -46,7 +46,7 @@ public class CarRepositoryImpl implements CarRepository {
         }
     }
 
-    public void delete(String id) {
-        carData.removeIf(car -> car.getCarId().equals(id));
+    public boolean delete(String id) {
+        return carData.removeIf(car -> car.getCarId().equals(id));
     }
 }

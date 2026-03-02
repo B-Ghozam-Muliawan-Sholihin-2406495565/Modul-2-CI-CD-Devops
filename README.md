@@ -17,3 +17,11 @@
 
 - Menurut saya, aplikasi di modul 2 ini sudah memenuhi definisi CI/CD. CI dilakukan pada semua branch dan main untuk PR, yang dimana dilakukan pengecekan kualitas kode oleh github actions untuk melakukan unit-test dan sonarcloud untuk pengecekan kualitas kode secara umum. CD akan dilakukan kalau semua step CI sudah berhasil pada PR dan sudah sukses merge ke main. Setelah itu program akan langsung di redeploy ke koyeb.
 </details>
+
+<details>
+<summary>Modul 3</summary>
+
+1. - Saya menerapkan SRP pada Controller dan Service, dimana sebelumnya Product Controller mengandung endpoint untuk Car juga, maka endpoint tersebut saya pindahkan ke CarController.java. Untuk Service, Product dan Car
+
+- 
+</details>

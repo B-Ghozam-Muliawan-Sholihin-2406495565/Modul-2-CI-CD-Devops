@@ -21,7 +21,7 @@ public class CarWriterImpl implements CarWriter{
     }
 
     @Override
-    public void deleteCarById(String carId) {
+    public void delete(String carId) {
         carRepository.delete(carId);
     }
 }
