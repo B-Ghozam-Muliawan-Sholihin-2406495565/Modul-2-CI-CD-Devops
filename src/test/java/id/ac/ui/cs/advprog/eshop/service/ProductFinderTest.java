@@ -1,10 +1,11 @@
 package id.ac.ui.cs.advprog.eshop.service;
 import id.ac.ui.cs.advprog.eshop.model.Product;
 import id.ac.ui.cs.advprog.eshop.repository.ProductRepository;
+
 import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,7 +21,7 @@ public class ProductFinderTest {
     private ProductRepository productRepository;
 
     @InjectMocks
-    private ProductFinder productFinder;
+    private ProductFinderImpl productFinder;
     
 
     @Test
