@@ -148,8 +148,8 @@ class PaymentServiceTest {
 
         Payment result = paymentService.addPayment(order, "CASH_ON_DELIVERY", codData);
 
-        assertEquals(PaymentStatus.SUCCESS.getValue(), result.getStatus());
-        assertEquals(OrderStatus.SUCCESS.getValue(), order.getStatus());
+        assertEquals(PaymentStatus.REJECTED.getValue(), result.getStatus());
+        assertEquals(OrderStatus.FAILED.getValue(), order.getStatus());
         verify(orderRepository, times(1)).save(order);
     }
 
@@ -160,8 +160,8 @@ class PaymentServiceTest {
 
         Payment result = paymentService.addPayment(order, "BANK_TRANSFER", new HashMap<>());
 
-        assertEquals(PaymentStatus.SUCCESS.getValue(), result.getStatus());
-        assertEquals(OrderStatus.SUCCESS.getValue(), order.getStatus());
+        assertEquals(PaymentStatus.REJECTED.getValue(), result.getStatus());
+        assertEquals(OrderStatus.FAILED.getValue(), order.getStatus());
         verify(orderRepository, times(1)).save(order);
     }
 
