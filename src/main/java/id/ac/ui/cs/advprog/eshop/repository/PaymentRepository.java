@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Repository
 public class PaymentRepository {
@@ -31,7 +32,7 @@ public class PaymentRepository {
                 return savedPayment;
             }
         }
-        return null;
+        throw new NoSuchElementException("Payment not found");
     }
 
     public List<Payment> findAll() {

@@ -105,8 +105,9 @@ class PaymentRepositoryTest {
             paymentRepository.save(payment);
         }
 
-        Payment findResult = paymentRepository.findById("nonexistent-id");
-        assertNull(findResult);
+        assertThrows(java.util.NoSuchElementException.class, () -> {
+            paymentRepository.findById("nonexistent-id");
+        });
     }
 
     @Test
