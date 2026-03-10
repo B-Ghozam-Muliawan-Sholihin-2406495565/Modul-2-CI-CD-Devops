@@ -138,10 +138,74 @@ class PaymentServiceTest {
     }
 
     @Test
-    void testAddPaymentWithNonVoucherMethod() {
+    void testAddPaymentWithValidCashOnDelivery() {
         Map<String, String> codData = new HashMap<>();
         codData.put("address", "Jl. Margonda");
         codData.put("deliveryFee", "15000");
+        
+        doReturn(payment).when(paymentRepository).save(any(Payment.class));
+        doReturn(order).when(orderRepository).save(any(Order.class));
+
+        Payment result = paymentService.addPayment(order, "CASH_ON_DELIVERY", codData);
+
+        assertEquals(PaymentStatus.SUCCESS.getValue(), result.getStatus());
+        assertEquals(OrderStatus.SUCCESS.getValue(), order.getStatus());
+        verify(orderRepository, times(1)).save(order);
+    }
+
+    @Test
+    void testAddPaymentWithCodEmptyAddress() {
+        Map<String, String> codData = new HashMap<>();
+        codData.put("address", "");
+        codData.put("deliveryFee", "15000");
+        
+        doReturn(payment).when(paymentRepository).save(any(Payment.class));
+        doReturn(order).when(orderRepository).save(any(Order.class));
+
+        Payment result = paymentService.addPayment(order, "CASH_ON_DELIVERY", codData);
+
+        assertEquals(PaymentStatus.REJECTED.getValue(), result.getStatus());
+        assertEquals(OrderStatus.FAILED.getValue(), order.getStatus());
+        verify(orderRepository, times(1)).save(order);
+    }
+
+    @Test
+    void testAddPaymentWithCodNullAddress() {
+        Map<String, String> codData = new HashMap<>();
+        codData.put("address", null);
+        codData.put("deliveryFee", "15000");
+        
+        doReturn(payment).when(paymentRepository).save(any(Payment.class));
+        doReturn(order).when(orderRepository).save(any(Order.class));
+
+        Payment result = paymentService.addPayment(order, "CASH_ON_DELIVERY", codData);
+
+        assertEquals(PaymentStatus.REJECTED.getValue(), result.getStatus());
+        assertEquals(OrderStatus.FAILED.getValue(), order.getStatus());
+        verify(orderRepository, times(1)).save(order);
+    }
+
+    @Test
+    void testAddPaymentWithCodEmptyDeliveryFee() {
+        Map<String, String> codData = new HashMap<>();
+        codData.put("address", "Jl. Margonda");
+        codData.put("deliveryFee", "");
+        
+        doReturn(payment).when(paymentRepository).save(any(Payment.class));
+        doReturn(order).when(orderRepository).save(any(Order.class));
+
+        Payment result = paymentService.addPayment(order, "CASH_ON_DELIVERY", codData);
+
+        assertEquals(PaymentStatus.REJECTED.getValue(), result.getStatus());
+        assertEquals(OrderStatus.FAILED.getValue(), order.getStatus());
+        verify(orderRepository, times(1)).save(order);
+    }
+
+    @Test
+    void testAddPaymentWithCodNullDeliveryFee() {
+        Map<String, String> codData = new HashMap<>();
+        codData.put("address", "Jl. Margonda");
+        codData.put("deliveryFee", null);
         
         doReturn(payment).when(paymentRepository).save(any(Payment.class));
         doReturn(order).when(orderRepository).save(any(Order.class));
