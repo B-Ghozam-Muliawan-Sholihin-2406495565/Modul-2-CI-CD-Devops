@@ -4,29 +4,43 @@ import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PaymentTest {
     private Map<String, String> paymentData;
+    private Order order;
 
     @BeforeEach
     void setUp() {
         this.paymentData = new HashMap<>();
         this.paymentData.put("voucherCode", "ESHOP1234ABC5678");
+
+        List<Product> products = new ArrayList<>();
+        Product product1 = new Product();
+        product1.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product1.setProductName("Sampo Cap Bambang");
+        product1.setProductQuantity(2);
+        products.add(product1);
+
+        this.order = new Order("order-123", products, 1708560000L, "Safira Sudrajat");
     }
 
     @Test
     void testCreatePaymentWithVoucherCode() {
         Payment payment = new Payment();
         payment.setId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        payment.setOrder(order);
         payment.setMethod("VOUCHER_CODE");
         payment.setStatus(PaymentStatus.SUCCESS.getValue());
         payment.setPaymentData(this.paymentData);
 
         assertEquals("eb558e9f-1c39-460e-8860-71af6af63bd6", payment.getId());
+        assertEquals(order, payment.getOrder());
         assertEquals("VOUCHER_CODE", payment.getMethod());
         assertEquals(PaymentStatus.SUCCESS.getValue(), payment.getStatus());
         assertEquals("ESHOP1234ABC5678", payment.getPaymentData().get("voucherCode"));
@@ -67,12 +81,14 @@ class PaymentTest {
     void testCreatePaymentUsingConstructor() {
         Payment payment = new Payment(
                 "eb558e9f-1c39-460e-8860-71af6af63bd6",
+                order,
                 "VOUCHER_CODE",
                 PaymentStatus.SUCCESS.getValue(),
                 this.paymentData
         );
 
         assertEquals("eb558e9f-1c39-460e-8860-71af6af63bd6", payment.getId());
+        assertEquals(order, payment.getOrder());
         assertEquals("VOUCHER_CODE", payment.getMethod());
         assertEquals(PaymentStatus.SUCCESS.getValue(), payment.getStatus());
         assertEquals("ESHOP1234ABC5678", payment.getPaymentData().get("voucherCode"));
@@ -82,6 +98,7 @@ class PaymentTest {
     void testCreatePaymentWithRejectedStatus() {
         Payment payment = new Payment(
                 "a0f9de46-90b1-437d-a0bf-d0821dde9096",
+                order,
                 "VOUCHER_CODE",
                 PaymentStatus.REJECTED.getValue(),
                 this.paymentData
@@ -94,6 +111,7 @@ class PaymentTest {
     void testCreatePaymentWithPendingStatus() {
         Payment payment = new Payment(
                 "a0f9de46-90b1-437d-a0bf-d0821dde9096",
+                order,
                 "CASH_ON_DELIVERY",
                 PaymentStatus.PENDING.getValue(),
                 this.paymentData
@@ -146,6 +164,7 @@ class PaymentTest {
         assertThrows(IllegalArgumentException.class, () -> {
             Payment payment = new Payment(
                     "eb558e9f-1c39-460e-8860-71af6af63bd6",
+                    order,
                     "VOUCHER_CODE",
                     "INVALID_STATUS",
                     this.paymentData
@@ -182,6 +201,7 @@ class PaymentTest {
         assertThrows(IllegalArgumentException.class, () -> {
             Payment payment = new Payment(
                     "a0f9de46-90b1-437d-a0bf-d0821dde9096",
+                    order,
                     "CASH_ON_DELIVERY",
                     "COMPLETED",
                     this.paymentData

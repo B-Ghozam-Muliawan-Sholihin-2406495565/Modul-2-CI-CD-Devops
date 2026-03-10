@@ -1,6 +1,8 @@
 package id.ac.ui.cs.advprog.eshop.repository;
 
+import id.ac.ui.cs.advprog.eshop.model.Order;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
+import id.ac.ui.cs.advprog.eshop.model.Product;
 import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,10 +18,20 @@ class PaymentRepositoryTest {
 
     PaymentRepository paymentRepository;
     List<Payment> payments;
+    Order order;
 
     @BeforeEach
     void setUp() {
         paymentRepository = new PaymentRepository();
+
+        List<Product> products = new ArrayList<>();
+        Product product1 = new Product();
+        product1.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product1.setProductName("Sampo Cap Bambang");
+        product1.setProductQuantity(2);
+        products.add(product1);
+
+        order = new Order("order-123", products, 1708560000L, "Safira Sudrajat");
 
         payments = new ArrayList<>();
 
@@ -28,6 +40,7 @@ class PaymentRepositoryTest {
 
         Payment payment1 = new Payment(
                 "eb558e9f-1c39-460e-8860-71af6af63bd6",
+                order,
                 "VOUCHER_CODE",
                 PaymentStatus.SUCCESS.getValue(),
                 voucherData
@@ -40,6 +53,7 @@ class PaymentRepositoryTest {
 
         Payment payment2 = new Payment(
                 "a0f9de46-90b1-437d-a0bf-d0821dde9096",
+                order,
                 "CASH_ON_DELIVERY",
                 PaymentStatus.PENDING.getValue(),
                 codData
@@ -48,6 +62,7 @@ class PaymentRepositoryTest {
 
         Payment payment3 = new Payment(
                 "x5f9de46-90b1-437d-a0bf-d0821dde9096",
+                order,
                 "BANK_TRANSFER",
                 PaymentStatus.REJECTED.getValue(),
                 new HashMap<>()
@@ -75,6 +90,7 @@ class PaymentRepositoryTest {
 
         Payment updatedPayment = new Payment(
                 payment.getId(),
+                payment.getOrder(),
                 payment.getMethod(),
                 PaymentStatus.SUCCESS.getValue(),
                 payment.getPaymentData()

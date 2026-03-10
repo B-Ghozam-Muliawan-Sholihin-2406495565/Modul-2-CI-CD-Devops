@@ -12,6 +12,7 @@ import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 @Setter
 public class Payment {
     String id;
+    Order order;
     String method;
     String status;
     Map<String, String> paymentData;
@@ -19,8 +20,9 @@ public class Payment {
     public Payment() {
     }
 
-    public Payment(String id, String method, String status, Map<String, String> paymentData) {
+    public Payment(String id, Order order, String method, String status, Map<String, String> paymentData) {
         this.id = id;
+        this.order = order;
         this.method = method;
         this.paymentData = paymentData;
         this.setStatus(status);
