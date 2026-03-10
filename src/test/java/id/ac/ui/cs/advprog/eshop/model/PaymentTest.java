@@ -108,16 +108,16 @@ class PaymentTest {
     }
 
     @Test
-    void testCreatePaymentWithPendingStatus() {
-        Payment payment = new Payment(
-                "a0f9de46-90b1-437d-a0bf-d0821dde9096",
-                order,
-                "CASH_ON_DELIVERY",
-                PaymentStatus.PENDING.getValue(),
-                this.paymentData
-        );
-
-        assertEquals(PaymentStatus.PENDING.getValue(), payment.getStatus());
+    void testCreatePaymentWithPendingStatusShouldThrow() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            Payment payment = new Payment(
+                    "a0f9de46-90b1-437d-a0bf-d0821dde9096",
+                    order,
+                    "CASH_ON_DELIVERY",
+                    "PENDING",
+                    this.paymentData
+            );
+        });
     }
 
     @Test
@@ -133,14 +133,15 @@ class PaymentTest {
     }
 
     @Test
-    void testSetStatusToPending() {
+    void testSetStatusToPendingShouldThrow() {
         Payment payment = new Payment();
         payment.setId("eb558e9f-1c39-460e-8860-71af6af63bd6");
         payment.setMethod("VOUCHER_CODE");
         payment.setStatus(PaymentStatus.SUCCESS.getValue());
 
-        payment.setStatus(PaymentStatus.PENDING.getValue());
-        assertEquals(PaymentStatus.PENDING.getValue(), payment.getStatus());
+        assertThrows(IllegalArgumentException.class, () -> {
+            payment.setStatus("PENDING");
+        });
     }
 
     @Test
