@@ -55,7 +55,7 @@ class PaymentRepositoryTest {
                 "a0f9de46-90b1-437d-a0bf-d0821dde9096",
                 order,
                 "CASH_ON_DELIVERY",
-                PaymentStatus.REJECTED.getValue(),
+                PaymentStatus.SUCCESS.getValue(),
                 codData
         );
         payments.add(payment2);

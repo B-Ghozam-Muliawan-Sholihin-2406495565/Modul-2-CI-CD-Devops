@@ -35,8 +35,14 @@
 <details>
 <summary>Modul 4</summary>
 
-1. 
+1. Menurut saya lumayan membantu karena jika ada refactor atau kode yang agak salah dari bayangan awal, ada validasi dari unit-test. Mungkin yang perlu diperbaiki adalah harus implement unit-test berdasarkan behavior, bukan tergantung method apa yang ada.
 
 2. 
+FAST: Memakai Mockito dan arraylist, gapake database langsung.
+INDEPENDENT: Setup di unittest sudah pakai before-each
+REPEATABLE: tes selalu memberikan hasil yang sama di mesin manapun.
+SELF-VALIDATING: Pakai assertion
+TIMELY: Sudah pakai happy dan unhappy
 
+Mungkin yang harus diperbaiki adalah harus menambahkan boundary testing, dimana saat ada suatu nilai negatif atau nama terlalu panjang.
 </details>
