@@ -58,22 +58,141 @@ class PaymentServiceTest {
         payment.setId("payment-123");
         payment.setOrder(order);
         payment.setMethod("VOUCHER_CODE");
-        payment.setStatus(PaymentStatus.PENDING.getValue());
+        payment.setStatus(PaymentStatus.SUCCESS.getValue());
         payment.setPaymentData(paymentData);
     }
 
     @Test
     void testAddPayment() {
         doReturn(payment).when(paymentRepository).save(any(Payment.class));
+        doReturn(order).when(orderRepository).save(any(Order.class));
 
         Payment result = paymentService.addPayment(order, "VOUCHER_CODE", paymentData);
 
         verify(paymentRepository, times(1)).save(any(Payment.class));
+        verify(orderRepository, times(1)).save(order);
         assertNotNull(result.getId());
         assertEquals(order, result.getOrder());
         assertEquals("VOUCHER_CODE", result.getMethod());
-        assertEquals(PaymentStatus.PENDING.getValue(), result.getStatus());
+        assertEquals(PaymentStatus.SUCCESS.getValue(), result.getStatus());
+        assertEquals(OrderStatus.SUCCESS.getValue(), order.getStatus());
         assertEquals(paymentData, result.getPaymentData());
+    }
+
+    @Test
+    void testAddPaymentWithValidVoucherCode() {
+        Map<String, String> validVoucher = new HashMap<>();
+        validVoucher.put("voucherCode", "ESHOP1234ABC5678");
+        
+        doReturn(payment).when(paymentRepository).save(any(Payment.class));
+        doReturn(order).when(orderRepository).save(any(Order.class));
+
+        Payment result = paymentService.addPayment(order, "VOUCHER_CODE", validVoucher);
+
+        assertEquals(PaymentStatus.SUCCESS.getValue(), result.getStatus());
+        assertEquals(OrderStatus.SUCCESS.getValue(), order.getStatus());
+        verify(orderRepository, times(1)).save(order);
+    }
+
+    @Test
+    void testAddPaymentWithInvalidVoucherCodeLength() {
+        Map<String, String> invalidVoucher = new HashMap<>();
+        invalidVoucher.put("voucherCode", "ESHOP123");
+        
+        doReturn(payment).when(paymentRepository).save(any(Payment.class));
+        doReturn(order).when(orderRepository).save(any(Order.class));
+
+        Payment result = paymentService.addPayment(order, "VOUCHER_CODE", invalidVoucher);
+
+        assertEquals(PaymentStatus.REJECTED.getValue(), result.getStatus());
+        assertEquals(OrderStatus.FAILED.getValue(), order.getStatus());
+        verify(orderRepository, times(1)).save(order);
+    }
+
+    @Test
+    void testAddPaymentWithInvalidVoucherCodePrefix() {
+        Map<String, String> invalidVoucher = new HashMap<>();
+        invalidVoucher.put("voucherCode", "SHOP12345ABC5678");
+        
+        doReturn(payment).when(paymentRepository).save(any(Payment.class));
+        doReturn(order).when(orderRepository).save(any(Order.class));
+
+        Payment result = paymentService.addPayment(order, "VOUCHER_CODE", invalidVoucher);
+
+        assertEquals(PaymentStatus.REJECTED.getValue(), result.getStatus());
+        assertEquals(OrderStatus.FAILED.getValue(), order.getStatus());
+    }
+
+    @Test
+    void testAddPaymentWithInvalidVoucherCodeDigitCount() {
+        Map<String, String> invalidVoucher = new HashMap<>();
+        invalidVoucher.put("voucherCode", "ESHOP123ABCDEFGH");
+        
+        doReturn(payment).when(paymentRepository).save(any(Payment.class));
+        doReturn(order).when(orderRepository).save(any(Order.class));
+
+        Payment result = paymentService.addPayment(order, "VOUCHER_CODE", invalidVoucher);
+
+        assertEquals(PaymentStatus.REJECTED.getValue(), result.getStatus());
+        assertEquals(OrderStatus.FAILED.getValue(), order.getStatus());
+    }
+
+    @Test
+    void testAddPaymentWithNonVoucherMethod() {
+        Map<String, String> codData = new HashMap<>();
+        codData.put("address", "Jl. Margonda");
+        codData.put("deliveryFee", "15000");
+        
+        doReturn(payment).when(paymentRepository).save(any(Payment.class));
+        doReturn(order).when(orderRepository).save(any(Order.class));
+
+        Payment result = paymentService.addPayment(order, "CASH_ON_DELIVERY", codData);
+
+        assertEquals(PaymentStatus.SUCCESS.getValue(), result.getStatus());
+        assertEquals(OrderStatus.SUCCESS.getValue(), order.getStatus());
+        verify(orderRepository, times(1)).save(order);
+    }
+
+    @Test
+    void testAddPaymentWithBankTransfer() {
+        doReturn(payment).when(paymentRepository).save(any(Payment.class));
+        doReturn(order).when(orderRepository).save(any(Order.class));
+
+        Payment result = paymentService.addPayment(order, "BANK_TRANSFER", new HashMap<>());
+
+        assertEquals(PaymentStatus.SUCCESS.getValue(), result.getStatus());
+        assertEquals(OrderStatus.SUCCESS.getValue(), order.getStatus());
+        verify(orderRepository, times(1)).save(order);
+    }
+
+    @Test
+    void testAddPaymentWithNullVoucherCode() {
+        Map<String, String> nullVoucher = new HashMap<>();
+        nullVoucher.put("voucherCode", null);
+        
+        doReturn(payment).when(paymentRepository).save(any(Payment.class));
+        doReturn(order).when(orderRepository).save(any(Order.class));
+
+        Payment result = paymentService.addPayment(order, "VOUCHER_CODE", nullVoucher);
+
+        assertEquals(PaymentStatus.REJECTED.getValue(), result.getStatus());
+        assertEquals(OrderStatus.FAILED.getValue(), order.getStatus());
+        verify(orderRepository, times(1)).save(order);
+    }
+
+    @Test
+    void testAddPaymentWithEmptyVoucherCode() {
+        Map<String, String> emptyVoucher = new HashMap<>();
+        emptyVoucher.put("voucherCode", "");
+        
+        doReturn(payment).when(paymentRepository).save(any(Payment.class));
+        doReturn(order).when(orderRepository).save(any(Order.class));
+
+        Payment result = paymentService.addPayment(order, "VOUCHER_CODE", emptyVoucher);
+
+        assertEquals(PaymentStatus.REJECTED.getValue(), result.getStatus());
+        assertEquals(OrderStatus.FAILED.getValue(), order.getStatus());
+        verify(orderRepository, times(1)).save(order);
     }
 
     @Test
@@ -103,20 +222,17 @@ class PaymentServiceTest {
     }
 
     @Test
-    void testSetStatusToPending() {
-        doReturn(payment).when(paymentRepository).save(any(Payment.class));
-
-        Payment result = paymentService.setStatus(payment, PaymentStatus.PENDING.getValue());
-
-        assertEquals(PaymentStatus.PENDING.getValue(), result.getStatus());
-        verify(paymentRepository, times(1)).save(payment);
-        verify(orderRepository, times(0)).save(any(Order.class));
-    }
-
-    @Test
     void testSetStatusWithInvalidStatus() {
         assertThrows(IllegalArgumentException.class,
                 () -> paymentService.setStatus(payment, "INVALID_STATUS"));
+
+        verify(paymentRepository, times(0)).save(any(Payment.class));
+    }
+
+    @Test
+    void testSetStatusWithPendingStatus() {
+        assertThrows(IllegalArgumentException.class,
+                () -> paymentService.setStatus(payment, "PENDING"));
 
         verify(paymentRepository, times(0)).save(any(Payment.class));
     }
