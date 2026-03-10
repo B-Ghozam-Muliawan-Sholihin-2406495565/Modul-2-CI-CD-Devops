@@ -46,6 +46,20 @@ public class PaymentServiceImpl implements PaymentService {
                     orderRepository.save(order);
                 }
             }
+        } else if ("CASH_ON_DELIVERY".equals(method) && paymentData != null) {
+            if (isValidCashOnDelivery(paymentData)) {
+                payment.setStatus(PaymentStatus.SUCCESS.getValue());
+                if (order != null) {
+                    order.setStatus(OrderStatus.SUCCESS.getValue());
+                    orderRepository.save(order);
+                }
+            } else {
+                payment.setStatus(PaymentStatus.REJECTED.getValue());
+                if (order != null) {
+                    order.setStatus(OrderStatus.FAILED.getValue());
+                    orderRepository.save(order);
+                }
+            }
         } else {
             payment.setStatus(PaymentStatus.REJECTED.getValue());
             if (order != null) {
@@ -71,6 +85,21 @@ public class PaymentServiceImpl implements PaymentService {
         
         long digitCount = voucherCode.chars().filter(Character::isDigit).count();
         return digitCount == 8;
+    }
+    
+    private boolean isValidCashOnDelivery(Map<String, String> paymentData) {
+        String address = paymentData.get("address");
+        String deliveryFee = paymentData.get("deliveryFee");
+        
+        if (address == null || address.isEmpty()) {
+            return false;
+        }
+        
+        if (deliveryFee == null || deliveryFee.isEmpty()) {
+            return false;
+        }
+        
+        return true;
     }
 
     @Override
