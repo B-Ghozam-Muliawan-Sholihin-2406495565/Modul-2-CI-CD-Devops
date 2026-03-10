@@ -30,11 +30,47 @@ public class PaymentServiceImpl implements PaymentService {
         payment.setId(paymentId);
         payment.setOrder(order);
         payment.setMethod(method);
-        payment.setStatus(PaymentStatus.PENDING.getValue());
+        
+        if ("VOUCHER_CODE".equals(method) && paymentData != null) {
+            String voucherCode = paymentData.get("voucherCode");
+            if (isValidVoucherCode(voucherCode)) {
+                payment.setStatus(PaymentStatus.SUCCESS.getValue());
+                if (order != null) {
+                    order.setStatus(OrderStatus.SUCCESS.getValue());
+                    orderRepository.save(order);
+                }
+            } else {
+                payment.setStatus(PaymentStatus.REJECTED.getValue());
+                if (order != null) {
+                    order.setStatus(OrderStatus.FAILED.getValue());
+                    orderRepository.save(order);
+                }
+            }
+        } else {
+            payment.setStatus(PaymentStatus.REJECTED.getValue());
+            if (order != null) {
+                order.setStatus(OrderStatus.FAILED.getValue());
+                orderRepository.save(order);
+            }
+        }
+        
         payment.setPaymentData(paymentData);
         
         paymentRepository.save(payment);
         return payment;
+    }
+    
+    private boolean isValidVoucherCode(String voucherCode) {
+        if (voucherCode == null || voucherCode.length() != 16) {
+            return false;
+        }
+        
+        if (!voucherCode.startsWith("ESHOP")) {
+            return false;
+        }
+        
+        long digitCount = voucherCode.chars().filter(Character::isDigit).count();
+        return digitCount == 8;
     }
 
     @Override
