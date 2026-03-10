@@ -9,7 +9,6 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PaymentTest {
-
     private Map<String, String> paymentData;
 
     @BeforeEach
